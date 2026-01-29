@@ -181,14 +181,17 @@ container.registerSingleton<ApiClient>(() => new ApiClient(config));
 **Method 2: Register Config as a Separate Service**
 
 ```typescript
-// Register the config first
-container.registerSingleton<ApiConfig>(() => myConfig);
+const config = { baseUrl: "https://api.example.com", apiKey: "key" };
 
-// ApiClient will automatically receive the config if it declares the dependency
+// Register the config first
+container.registerSingleton<ApiConfig>(() => config);
+
+// ApiClient must declare its dependency on ApiConfig using CONSTRUCTOR_ARGUMENTS_SYMBOL
+// Then it will automatically receive the config
 container.registerSingleton<ApiClient>();
 ```
 
-For more detailed examples and patterns, see the [ApiClient Configuration Guide](./documentation/examples/api-client-config.md).
+**Note:** Method 2 requires the ApiClient to declare its constructor dependencies. See the detailed [ApiClient Configuration Guide](./documentation/examples/api-client-config.md) for complete examples of both methods.
 
 <!-- SHADOW_SECTION_CONTRIBUTING_START -->
 

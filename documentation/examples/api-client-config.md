@@ -169,5 +169,5 @@ const apiClient = container.get<IApiClient>({identifier: "IApiClient"});
 3. **Dependency injection** / **Dependency injection**: Agar konfiguratsiyani alohida xizmat sifatida ro'yxatdan o'tkazsangiz, u avtomatik ravishda inject qilinadi.
 
 4. **Singleton vs Transient**: 
-   - `registerSingleton` - Faqat bitta instance yaratiladi
-   - `registerTransient` - Har safar yangi instance yaratiladi
+   - `registerSingleton` - Faqat bitta instance yaratiladi / Only one instance is created
+   - `registerTransient` - Har safar yangi instance yaratiladi / A new instance is created each time
