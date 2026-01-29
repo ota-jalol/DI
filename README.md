@@ -167,6 +167,29 @@ Sure, you can do that if you want to:
 const service = container.get<IMyService>();
 ```
 
+### Passing Configuration to Services
+
+When you need to pass configuration to a service's constructor, you have several options:
+
+**Method 1: Factory Function (Simplest)**
+
+```typescript
+const config = { baseUrl: "https://api.example.com", apiKey: "key" };
+container.registerSingleton<ApiClient>(() => new ApiClient(config));
+```
+
+**Method 2: Register Config as a Separate Service**
+
+```typescript
+// Register the config first
+container.registerSingleton<ApiConfig>(() => myConfig);
+
+// ApiClient will automatically receive the config if it declares the dependency
+container.registerSingleton<ApiClient>();
+```
+
+For more detailed examples and patterns, see the [ApiClient Configuration Guide](./documentation/examples/api-client-config.md).
+
 <!-- SHADOW_SECTION_CONTRIBUTING_START -->
 
 ## Contributing
