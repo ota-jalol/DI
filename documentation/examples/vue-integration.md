@@ -35,6 +35,11 @@ const apiConfig: ApiConfig = {
   timeout: 5000
 };
 
+// Production da API key mavjudligini tekshirish / Check for API key in production
+if (import.meta.env.PROD && !apiConfig.apiKey) {
+  console.warn("Warning: API key is missing in production environment");
+}
+
 container.registerSingleton<ApiConfig>(() => apiConfig, {
   identifier: "ApiConfig"
 });
@@ -206,6 +211,8 @@ Create a reusable composable:
 // src/composables/useService.ts
 import {inject} from "vue";
 import type {DIContainer} from "@wessberg/di";
+import type {ApiClient} from "../services/ApiClient";
+import type {UserService} from "../services/UserService";
 
 export function useService<T>(identifier: string): T {
   const container = inject<DIContainer>("container");
@@ -283,7 +290,8 @@ export const useUserStore = defineStore("user", {
       try {
         this.users = await userService.getUsers();
       } catch (err) {
-        this.error = err.message;
+        const errorMessage = err instanceof Error ? err.message : "Unknown error occurred";
+        this.error = errorMessage;
         throw err;
       } finally {
         this.loading = false;

@@ -92,16 +92,18 @@ import type {ApiClient} from "./services/ApiClient";
 // Container ni olish / Get container
 const container = inject<DIContainer>("container");
 
+if (!container) {
+  throw new Error("DI Container not found. Make sure DIPlugin is installed.");
+}
+
 // Xizmatni olish / Get service
-const apiClient = container?.get<ApiClient>({identifier: "ApiClient"});
+const apiClient = container.get<ApiClient>({identifier: "ApiClient"});
 
 // Ma'lumotlarni yuklash / Load data
 const users = ref([]);
 
 onMounted(async () => {
-  if (apiClient) {
-    users.value = await apiClient.getUsers();
-  }
+  users.value = await apiClient.getUsers();
 });
 </script>
 
@@ -128,7 +130,7 @@ export function useService<T>(identifier: string): T {
   const container = inject<DIContainer>("container");
   
   if (!container) {
-    throw new Error("Container topilmadi!");
+    throw new Error("DI Container topilmadi / DI Container not found");
   }
   
   return container.get<T>({identifier});
