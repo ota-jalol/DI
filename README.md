@@ -193,6 +193,15 @@ container.registerSingleton<ApiClient>();
 
 **Note:** Method 2 requires the ApiClient to declare its constructor dependencies. See the detailed [ApiClient Configuration Guide](./documentation/examples/api-client-config.md) for complete examples of both methods.
 
+### Framework Integration
+
+This DI container works great with modern frameworks:
+
+- **Vue.js**: Full integration with Vue 3 (Composition API, Options API, Provide/Inject, Pinia). See the [Vue.js Integration Guide](./documentation/examples/vue-integration.md).
+- **React**: Can be used with Context API or custom hooks
+- **Angular**: Works alongside Angular's DI system
+- **Node.js**: Perfect for Express, Fastify, NestJS backends
+
 <!-- SHADOW_SECTION_CONTRIBUTING_START -->
 
 ## Contributing
