@@ -99,6 +99,36 @@ $ pnpm add @wessberg/di
 
 <!-- SHADOW_SECTION_INSTALL_END -->
 
+## Setup DI-Compiler
+
+**⚠️ Important:** This library requires the [DI-Compiler](https://github.com/wessberg/di-compiler) to work properly. The compiler transforms your TypeScript code at compile-time to enable interface-to-implementation mapping.
+
+### Quick Setup
+
+```bash
+# Install both the runtime and compiler
+$ npm install @wessberg/di @wessberg/di-compiler ttypescript
+
+# Configure tsconfig.json
+{
+  "compilerOptions": {
+    "plugins": [
+      { "transform": "@wessberg/di-compiler" }
+    ]
+  }
+}
+
+# Build with ttypescript instead of tsc
+$ npx ttsc
+```
+
+### Full Setup Guides
+
+- **[Quick Start Guide](./documentation/examples/di-compiler-quick-start.md)** - Get started in 5 minutes
+- **[Complete Setup Guide](./documentation/examples/di-compiler-setup.md)** - Detailed configuration for Webpack, Rollup, Vite, etc.
+
+Without the compiler, you'll get errors like `"2 arguments required, but only 0 present"`.
+
 <!-- SHADOW_SECTION_USAGE_START -->
 
 ## Usage
