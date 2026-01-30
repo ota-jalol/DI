@@ -107,7 +107,8 @@ $ pnpm add @wessberg/di
 
 ```bash
 # Install both the runtime and compiler
-$ npm install @wessberg/di @wessberg/di-compiler ttypescript
+$ npm install @wessberg/di
+$ npm install @wessberg/di-compiler ttypescript --save-dev
 
 # Configure tsconfig.json
 {

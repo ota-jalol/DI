@@ -15,22 +15,22 @@ The DI Container identifies the relationship between interfaces and classes at c
 ### npm
 
 ```bash
-npm install @wessberg/di @wessberg/di-compiler --save
-npm install typescript --save-dev
+npm install @wessberg/di
+npm install @wessberg/di-compiler typescript --save-dev
 ```
 
 ### yarn
 
 ```bash
-yarn add @wessberg/di @wessberg/di-compiler
-yarn add typescript --dev
+yarn add @wessberg/di
+yarn add @wessberg/di-compiler typescript --dev
 ```
 
 ### pnpm
 
 ```bash
-pnpm add @wessberg/di @wessberg/di-compiler
-pnpm add typescript --save-dev
+pnpm add @wessberg/di
+pnpm add @wessberg/di-compiler typescript --save-dev
 ```
 
 ## 2. Sozlash / Configuration
@@ -336,10 +336,10 @@ my-project/
     "start": "node dist/index.js"
   },
   "dependencies": {
-    "@wessberg/di": "^3.0.2",
-    "@wessberg/di-compiler": "^3.0.1"
+    "@wessberg/di": "^3.0.2"
   },
   "devDependencies": {
+    "@wessberg/di-compiler": "^3.0.1",
     "ttypescript": "^1.5.15",
     "typescript": "^5.0.0"
   }
@@ -478,7 +478,7 @@ npm start
 
 **Yechim / Solution**:
 ```bash
-npm install @wessberg/di-compiler --save
+npm install @wessberg/di-compiler --save-dev
 ```
 
 ### Xato: "Module not found" runtime vaqtida

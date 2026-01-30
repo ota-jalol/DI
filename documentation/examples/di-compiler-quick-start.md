@@ -12,10 +12,11 @@ DI-Compiler works **at compile time** and transforms TypeScript code. To add it:
 
 ```bash
 # 1. O'rnatish / Install
-npm install @wessberg/di @wessberg/di-compiler ttypescript --save
+npm install @wessberg/di
+npm install @wessberg/di-compiler ttypescript --save-dev
 
 # 2. tsconfig.json da sozlash / Configure in tsconfig.json
-# (quyida batafsil)
+# (quyida 2-qadamda batafsil / detailed in Step 2 below)
 
 # 3. Build qilish / Build
 npx ttsc
@@ -26,14 +27,15 @@ npx ttsc
 ### 1-qadam: Paketlarni o'rnatish / Step 1: Install packages
 
 ```bash
-npm install @wessberg/di @wessberg/di-compiler ttypescript typescript --save
+npm install @wessberg/di
+npm install @wessberg/di-compiler ttypescript typescript --save-dev
 ```
 
 **Tushuntirish / Explanation**:
-- `@wessberg/di` - DI Container (runtime)
-- `@wessberg/di-compiler` - Compiler transformer (build vaqtida)
-- `ttypescript` - TypeScript bilan transformer'larni ishlatish uchun
-- `typescript` - TypeScript compileri
+- `@wessberg/di` - DI Container (runtime dependency)
+- `@wessberg/di-compiler` - Compiler transformer (build-time, dev dependency)
+- `ttypescript` - TypeScript bilan transformer'larni ishlatish uchun (dev dependency)
+- `typescript` - TypeScript compileri (dev dependency)
 
 ### 2-qadam: tsconfig.json yaratish yoki o'zgartirish / Step 2: Create or modify tsconfig.json
 
@@ -88,11 +90,11 @@ Add build script to your `package.json`:
     "start": "node dist/index.js"
   },
   "dependencies": {
-    "@wessberg/di": "^3.0.2",
-    "@wessberg/di-compiler": "^3.0.1",
-    "ttypescript": "^1.5.15"
+    "@wessberg/di": "^3.0.2"
   },
   "devDependencies": {
+    "@wessberg/di-compiler": "^3.0.1",
+    "ttypescript": "^1.5.15",
     "typescript": "^5.0.0"
   }
 }
@@ -220,7 +222,8 @@ cd my-di-project
 npm init -y
 
 # Paketlarni o'rnatish / Install packages
-npm install @wessberg/di @wessberg/di-compiler ttypescript typescript
+npm install @wessberg/di
+npm install @wessberg/di-compiler ttypescript typescript --save-dev
 ```
 
 ### Fayllarni yaratish / Create files
@@ -371,7 +374,8 @@ DI-Compiler Vue.js bilan mukammal ishlaydi:
 DI-Compiler works perfectly with Vue.js:
 
 ```bash
-npm install @wessberg/di @wessberg/di-compiler ttypescript
+npm install @wessberg/di
+npm install @wessberg/di-compiler ttypescript --save-dev
 ```
 
 **vite.config.ts** da Rollup typescript plugin'ini qo'shing.
@@ -387,7 +391,8 @@ React bilan xuddi shunday:
 Same with React:
 
 ```bash
-npm install @wessberg/di @wessberg/di-compiler ttypescript
+npm install @wessberg/di
+npm install @wessberg/di-compiler ttypescript --save-dev
 ```
 
 Webpack yoki Rollup konfiguratsiyasiga qo'shing.
