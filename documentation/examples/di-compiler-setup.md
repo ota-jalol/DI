@@ -242,7 +242,6 @@ export default {
       // ts-patch bilan oddiy TypeScript ishlaydi
       // Regular TypeScript works with ts-patch
     })
-    })
   ]
 };
 ```
@@ -544,9 +543,9 @@ npm install typescript@4.9.5 --save-dev
 **Sabab / Cause**: DI-Compiler ishlamayapti.
 
 **Yechim / Solution**: 
-1. ttypescript yoki ts-patch to'g'ri o'rnatilganini tekshiring
+1. ts-patch o'rnatilganini va faollashtirilganini tekshiring: `npx ts-patch install`
 2. `tsconfig.json` da `plugins` qo'shilganini tasdiqlang
-3. Build vaqtida `ttsc` (ttypescript) ishlatayotganingizni tekshiring
+3. Build vaqtida `tsc` ishlatayotganingizni tekshiring (ttsc emas)
 
 ### Xato: "Cannot find module '@wessberg/di-compiler'"
 

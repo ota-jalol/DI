@@ -197,14 +197,11 @@ npx ttsc
 ```
 
 ### Variant 3: Webpack
-npx tsc
-```
-
-### Variant 3: Webpack
 
 **Kerakli paketlar / Required packages**:
 ```bash
-npm install webpack webpack-cli ts-loader ttypescript --save-dev
+npm install webpack webpack-cli ts-loader ts-patch --save-dev
+npx ts-patch install
 ```
 
 **webpack.config.js**:
@@ -216,9 +213,7 @@ module.exports = {
       {
         test: /\.ts$/,
         loader: 'ts-loader',
-        options: {
-          compiler: 'ttypescript'
-        }
+        exclude: /node_modules/
       }
     ]
   },
@@ -227,6 +222,10 @@ module.exports = {
   }
 };
 ```
+
+**Eslatma / Note**: ts-patch bilan ts-loader `compiler` option kerak emas.
+
+With ts-patch, ts-loader doesn't need the `compiler` option.
 
 **Ishlatish / Use**:
 ```bash
@@ -251,7 +250,10 @@ npm init -y
 
 # Paketlarni o'rnatish / Install packages
 npm install @wessberg/di
-npm install @wessberg/di-compiler ttypescript typescript --save-dev
+npm install @wessberg/di-compiler ts-patch typescript --save-dev
+
+# ts-patch ni faollashtirish / Enable ts-patch
+npx ts-patch install
 ```
 
 ### Fayllarni yaratish / Create files
@@ -281,8 +283,9 @@ npm install @wessberg/di-compiler ttypescript typescript --save-dev
   "name": "my-di-project",
   "version": "1.0.0",
   "scripts": {
-    "build": "ttsc",
-    "start": "node dist/index.js"
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "postinstall": "ts-patch install -s"
   }
 }
 ```
