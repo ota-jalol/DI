@@ -4,6 +4,16 @@ Ha, DI Container Vue.js ilovalariga **JUDA YAXSHI** bog'lanadi! Bu yerda Vue 3 b
 
 Yes, the DI Container works **GREAT** with Vue.js applications! Here are examples for using it with Vue 3.
 
+## 🚀 To'liq Misol / Complete Example
+
+**Vue 3 + Vite bilan to'liq ishlaydigan loyiha kerakmi?** 
+
+**Need a complete working project with Vue 3 + Vite?**
+
+👉 **[Vue 3 + Vite Complete Example](./vue3-vite-complete-example.md)** - Barcha fayl va konfiguratsiyalar bilan / With all files and configurations
+
+---
+
 ## Tez javob / Quick Answer
 
 **DI Container Vue.js ga to'liq mos keladi!** Uni Vue ilovasida global qilib o'rnatish yoki provide/inject pattern bilan ishlatish mumkin.

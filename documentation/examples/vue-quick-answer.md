@@ -191,6 +191,7 @@ Ko'proq misollar uchun qarang:
 
 For more examples, see:
 
+- **[Vue 3 + Vite Complete Example](./vue3-vite-complete-example.md)** - 🚀 To'liq ishlaydigan Vue 3 + Vite loyiha misoli / Complete working Vue 3 + Vite project example
 - [Vue.js Integration Guide](./vue-integration.md) - To'liq Vue.js integratsiya hujjatlari
 - [ApiClient Config Guide](./api-client-config.md) - Konfiguratsiyani qanday yuborish
 

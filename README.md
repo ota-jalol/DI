@@ -233,7 +233,9 @@ container.registerSingleton<ApiClient>();
 
 This DI container works great with modern frameworks:
 
-- **Vue.js**: Full integration with Vue 3 (Composition API, Options API, Provide/Inject, Pinia). See the [Vue.js Integration Guide](./documentation/examples/vue-integration.md).
+- **Vue.js**: Full integration with Vue 3 (Composition API, Options API, Provide/Inject, Pinia). 
+  - 🚀 **[Vue 3 + Vite Complete Example](./documentation/examples/vue3-vite-complete-example.md)** - Ready-to-use project template
+  - [Vue.js Integration Guide](./documentation/examples/vue-integration.md) - Detailed integration patterns
 - **React**: Can be used with Context API or custom hooks
 - **Angular**: Works alongside Angular's DI system
 - **Node.js**: Perfect for Express, Fastify, NestJS backends
