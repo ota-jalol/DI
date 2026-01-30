@@ -13,14 +13,21 @@ DI-Compiler works **at compile time** and transforms TypeScript code. To add it:
 ```bash
 # 1. O'rnatish / Install
 npm install @wessberg/di
-npm install @wessberg/di-compiler ttypescript --save-dev
+npm install @wessberg/di-compiler ts-patch --save-dev
 
-# 2. tsconfig.json da sozlash / Configure in tsconfig.json
+# 2. ts-patch ni faollashtirish / Enable ts-patch
+npx ts-patch install
+
+# 3. tsconfig.json da sozlash / Configure in tsconfig.json
 # (quyida 2-qadamda batafsil / detailed in Step 2 below)
 
-# 3. Build qilish / Build
-npx ttsc
+# 4. Build qilish / Build
+npx tsc
 ```
+
+**⚠️ Muhim / Important**: TypeScript 5.0+ uchun **ts-patch tavsiya etiladi** (ttypescript emas). ttypescript yangi versiyalar bilan ishlamaydi.
+
+For TypeScript 5.0+, **ts-patch is recommended** (not ttypescript). ttypescript doesn't work with newer versions.
 
 ## To'liq yo'riqnoma / Complete Guide
 
@@ -28,16 +35,26 @@ npx ttsc
 
 ```bash
 npm install @wessberg/di
-npm install @wessberg/di-compiler ttypescript typescript --save-dev
+npm install @wessberg/di-compiler ts-patch typescript --save-dev
 ```
 
 **Tushuntirish / Explanation**:
 - `@wessberg/di` - DI Container (runtime dependency)
 - `@wessberg/di-compiler` - Compiler transformer (build-time, dev dependency)
-- `ttypescript` - TypeScript bilan transformer'larni ishlatish uchun (dev dependency)
+- `ts-patch` - TypeScript ni patch qiladi, barcha versiyalar bilan ishlaydi (dev dependency)
 - `typescript` - TypeScript compileri (dev dependency)
 
-### 2-qadam: tsconfig.json yaratish yoki o'zgartirish / Step 2: Create or modify tsconfig.json
+### 2-qadam: ts-patch ni faollashtirish / Step 2: Enable ts-patch
+
+```bash
+npx ts-patch install
+```
+
+Bu buyruq TypeScript'ni patch qiladi va transformerlar bilan ishlashga imkon beradi.
+
+This command patches TypeScript and enables working with transformers.
+
+### 3-qadam: tsconfig.json yaratish yoki o'zgartirish / Step 3: Create or modify tsconfig.json
 
 Loyihangizda `tsconfig.json` faylini yarating yoki o'zgartiring:
 
@@ -74,7 +91,7 @@ Create or modify `tsconfig.json` file in your project:
 ]
 ```
 
-### 3-qadam: package.json da script'lar / Step 3: Scripts in package.json
+### 4-qadam: package.json da script'lar / Step 4: Scripts in package.json
 
 `package.json` faylingizga build script qo'shing:
 
@@ -85,16 +102,17 @@ Add build script to your `package.json`:
   "name": "my-project",
   "version": "1.0.0",
   "scripts": {
-    "build": "ttsc",
-    "dev": "ttsc --watch",
-    "start": "node dist/index.js"
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "start": "node dist/index.js",
+    "postinstall": "ts-patch install -s"
   },
   "dependencies": {
     "@wessberg/di": "^3.0.2"
   },
   "devDependencies": {
     "@wessberg/di-compiler": "^3.0.1",
-    "ttypescript": "^1.5.15",
+    "ts-patch": "^3.0.2",
     "typescript": "^5.0.0"
   }
 }
@@ -143,23 +161,11 @@ npm start
 
 ## Konfiguratsiya turlari / Configuration Types
 
-### Variant 1: ttypescript (Tavsiya etiladi / Recommended)
+### Variant 1: ts-patch (TAVSIYA ETILADI / RECOMMENDED)
 
-**Afzalligi / Advantage**: Eng oddiy, to'g'ridan-to'g'ri TypeScript o'rniga ishlatiladi.
+**Afzalligi / Advantage**: Barcha TypeScript versiyalari (5.0+ ham) bilan ishlaydi, oddiy `tsc` ishlatish mumkin.
 
-**O'rnatish / Install**:
-```bash
-npm install ttypescript --save-dev
-```
-
-**Ishlatish / Use**:
-```bash
-npx ttsc
-```
-
-### Variant 2: ts-patch
-
-**Afzalligi / Advantage**: TypeScript'ni to'g'ridan-to'g'ri patch qiladi, keyin `tsc` ishlatishingiz mumkin.
+Works with all TypeScript versions (including 5.0+), can use regular `tsc`.
 
 **O'rnatish / Install**:
 ```bash
@@ -169,6 +175,28 @@ npx ts-patch install
 
 **Ishlatish / Use**:
 ```bash
+npx tsc
+```
+
+### Variant 2: ttypescript (FAQAT TypeScript 4.x uchun / ONLY for TypeScript 4.x)
+
+**⚠️ Ogohlantirish / Warning**: ttypescript TypeScript 5.0+ bilan **ISHLAMAYDI**. Yangi loyihalar uchun ts-patch ishlatishni tavsiya qilamiz.
+
+ttypescript does **NOT WORK** with TypeScript 5.0+. We recommend using ts-patch for new projects.
+
+**Afzalligi / Advantage**: TypeScript 4.x uchun sodda.
+
+**O'rnatish / Install**:
+```bash
+npm install ttypescript typescript@4.9.5 --save-dev
+```
+
+**Ishlatish / Use**:
+```bash
+npx ttsc
+```
+
+### Variant 3: Webpack
 npx tsc
 ```
 
@@ -334,12 +362,40 @@ Users: [ { id: 1, name: 'Ali' }, { id: 2, name: 'Vali' } ]
 
 ## Muammolar va yechimlar / Problems and Solutions
 
+### ❌ Xato: "Cannot set property createProgram" (ttypescript bilan / with ttypescript)
+
+**To'liq xato / Full error**:
+```
+TypeError: Cannot set property createProgram of #<Object> which has only a getter
+```
+
+**Sabab / Cause**: Bu ttypescript ning TypeScript 5.0+ bilan mos kelmasligi. TypeScript 5.0+ frozen modules ishlatadi.
+
+This is ttypescript incompatibility with TypeScript 5.0+. TypeScript 5.0+ uses frozen modules.
+
+**Yechim / Solution**: **ts-patch ishlatishga o'ting**:
+
+```bash
+# ttypescript ni o'chirish / Uninstall ttypescript
+npm uninstall ttypescript
+
+# ts-patch ni o'rnatish / Install ts-patch
+npm install ts-patch --save-dev
+
+# ts-patch ni faollashtirish / Enable ts-patch
+npx ts-patch install
+
+# package.json da script'larni o'zgartiring / Change scripts in package.json
+# "build": "tsc" (ttsc emas / not ttsc)
+# "dev": "tsc --watch"
+```
+
 ### ❌ Xato: "2 arguments required, but only 0 present"
 
 **Sabab / Cause**: DI-Compiler ishlamayapti
 
 **Yechim / Solution**:
-1. `ttsc` ishlatayotganingizni tekshiring (oddiy `tsc` emas!)
+1. ts-patch o'rnatilganini va faollashtirilganini tekshiring: `npx ts-patch install`
 2. `tsconfig.json` da `plugins` qo'shilganini tekshiring
 3. Qaytadan build qiling: `npm run build`
 
@@ -347,7 +403,7 @@ Users: [ { id: 1, name: 'Ali' }, { id: 2, name: 'Vali' } ]
 
 **Yechim / Solution**:
 ```bash
-npm install @wessberg/di-compiler
+npm install @wessberg/di-compiler --save-dev
 ```
 
 ### ❌ Build ishlamayapti
@@ -356,12 +412,14 @@ npm install @wessberg/di-compiler
 1. `node_modules` papkasi bormi?
 2. `tsconfig.json` to'g'ri joylashganmi?
 3. `src` papkasida `.ts` fayllar bormi?
+4. ts-patch faollashtirilganmi? `npx ts-patch install`
 
 **Yechim / Solution**:
 ```bash
 # Tozalash / Clean
 rm -rf node_modules dist
 npm install
+npx ts-patch install
 npm run build
 ```
 
@@ -413,9 +471,14 @@ DI-Compiler ni qo'shish juda oddiy:
 
 Adding DI-Compiler is very simple:
 
-1. **O'rnatish / Install**: `npm install @wessberg/di-compiler ttypescript`
-2. **Sozlash / Configure**: `tsconfig.json` ga plugin qo'shing
-3. **Build / Build**: `npx ttsc` ishlatish
+1. **O'rnatish / Install**: `npm install @wessberg/di-compiler ts-patch --save-dev`
+2. **Faollashtirish / Enable**: `npx ts-patch install`
+3. **Sozlash / Configure**: `tsconfig.json` ga plugin qo'shing
+4. **Build / Build**: `npx tsc` ishlatish
+
+**⚠️ Muhim / Important**: 
+- TypeScript 5.0+ uchun **ts-patch** ishlatishni unutmang (ttypescript emas)
+- For TypeScript 5.0+, remember to use **ts-patch** (not ttypescript)
 
 **Eslatma / Note**: DI-Compiler faqat **build vaqtida** kerak. Production'da faqat `@wessberg/di` kerak bo'ladi.
 

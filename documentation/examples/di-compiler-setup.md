@@ -39,17 +39,29 @@ DI-Compiler ni turli xil build tool'lar bilan ishlatish mumkin. Quyida eng mashh
 
 DI-Compiler can be used with various build tools. Below are the most popular methods.
 
-### Usul 1 / Method 1: ttypescript bilan / With ttypescript
+**⚠️ TypeScript 5.0+ Eslatma / Note**: TypeScript 5.0 va undan yuqori versiyalar uchun **ts-patch tavsiya etiladi**. ttypescript eski versiyalar bilan muammo qiladi.
 
-Bu eng oddiy va tavsiya etiladigan usul / This is the simplest and recommended method.
+For TypeScript 5.0+, **ts-patch is recommended**. ttypescript has compatibility issues with newer versions.
 
-#### 1.1. ttypescript ni o'rnatish / Install ttypescript
+### Usul 1 / Method 1: ts-patch bilan / With ts-patch (TAVSIYA ETILADI / RECOMMENDED)
+
+ts-patch TypeScript ni to'g'ridan-to'g'ri patch qiladi va barcha TypeScript versiyalari bilan ishlaydi.
+
+ts-patch directly patches TypeScript and works with all TypeScript versions.
+
+#### 1.1. ts-patch ni o'rnatish / Install ts-patch
 
 ```bash
-npm install ttypescript --save-dev
+npm install ts-patch --save-dev
 ```
 
-#### 1.2. tsconfig.json ni sozlash / Configure tsconfig.json
+#### 1.2. ts-patch ni faollashtirish / Enable ts-patch
+
+```bash
+npx ts-patch install
+```
+
+#### 1.3. tsconfig.json sozlash / Configure tsconfig.json
 
 ```json
 {
@@ -69,7 +81,60 @@ npm install ttypescript --save-dev
 }
 ```
 
-#### 1.3. package.json da script'lar / Scripts in package.json
+#### 1.4. package.json da script'lar / Scripts in package.json
+
+```json
+{
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch"
+  }
+}
+```
+
+#### 1.5. Build qilish / Build
+
+```bash
+npm run build
+```
+
+**Afzallik / Advantage**: TypeScript 5.0+ bilan ishlaydi, oddiy `tsc` ishlatish mumkin.
+
+Works with TypeScript 5.0+, can use regular `tsc`.
+
+### Usul 2 / Method 2: ttypescript bilan / With ttypescript (faqat TypeScript 4.x uchun / for TypeScript 4.x only)
+
+**⚠️ Ogohlantirish / Warning**: ttypescript TypeScript 5.0+ bilan ishlamaydi. ts-patch ishlatishni tavsiya qilamiz.
+
+ttypescript doesn't work with TypeScript 5.0+. We recommend using ts-patch.
+
+#### 2.1. ttypescript ni o'rnatish / Install ttypescript
+
+```bash
+npm install ttypescript typescript@4.9.5 --save-dev
+```
+
+#### 2.2. tsconfig.json ni sozlash / Configure tsconfig.json
+
+```json
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "module": "ESNext",
+    "moduleResolution": "node",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "plugins": [
+      {
+        "transform": "@wessberg/di-compiler"
+      }
+    ]
+  }
+}
+```
+
+#### 2.3. package.json da script'lar / Scripts in package.json
 
 ```json
 {
@@ -80,46 +145,10 @@ npm install ttypescript --save-dev
 }
 ```
 
-#### 1.4. Ishlatish / Usage
+#### 2.4. Ishlatish / Usage
 
 ```bash
 npm run build
-```
-
-### Usul 2 / Method 2: ts-patch bilan / With ts-patch
-
-ts-patch TypeScript ni to'g'ridan-to'g'ri patch qiladi / ts-patch directly patches TypeScript.
-
-#### 2.1. ts-patch ni o'rnatish / Install ts-patch
-
-```bash
-npm install ts-patch --save-dev
-```
-
-#### 2.2. ts-patch ni faollashtirish / Enable ts-patch
-
-```bash
-npx ts-patch install
-```
-
-#### 2.3. tsconfig.json sozlash / Configure tsconfig.json
-
-```json
-{
-  "compilerOptions": {
-    "plugins": [
-      {
-        "transform": "@wessberg/di-compiler"
-      }
-    ]
-  }
-}
-```
-
-#### 2.4. Build qilish / Build
-
-```bash
-tsc
 ```
 
 ### Usul 3 / Method 3: Webpack bilan / With Webpack
@@ -131,10 +160,16 @@ Using with Webpack + ts-loader or awesome-typescript-loader.
 #### 3.1. Kerakli paketlar / Required packages
 
 ```bash
-npm install webpack webpack-cli ts-loader --save-dev
+npm install webpack webpack-cli ts-loader ts-patch --save-dev
 ```
 
-#### 3.2. webpack.config.js
+#### 3.2. ts-patch ni faollashtirish / Enable ts-patch
+
+```bash
+npx ts-patch install
+```
+
+#### 3.3. webpack.config.js
 
 ```javascript
 const path = require('path');
@@ -146,9 +181,6 @@ module.exports = {
       {
         test: /\.tsx?$/,
         loader: 'ts-loader',
-        options: {
-          compiler: 'ttypescript'
-        },
         exclude: /node_modules/
       }
     ]
@@ -163,7 +195,11 @@ module.exports = {
 };
 ```
 
-#### 3.3. tsconfig.json
+**Eslatma / Note**: ts-patch dan foydalansangiz, `compiler: 'ttypescript'` kerak emas. Oddiy ts-loader ishlaydi.
+
+When using ts-patch, you don't need `compiler: 'ttypescript'`. Regular ts-loader works.
+
+#### 3.4. tsconfig.json
 
 ```json
 {
@@ -186,7 +222,8 @@ Using with Rollup + @rollup/plugin-typescript.
 #### 4.1. Kerakli paketlar / Required packages
 
 ```bash
-npm install rollup @rollup/plugin-typescript ttypescript --save-dev
+npm install rollup @rollup/plugin-typescript ts-patch --save-dev
+npx ts-patch install
 ```
 
 #### 4.2. rollup.config.js
@@ -202,7 +239,9 @@ export default {
   },
   plugins: [
     typescript({
-      typescript: require('ttypescript')
+      // ts-patch bilan oddiy TypeScript ishlaydi
+      // Regular TypeScript works with ts-patch
+    })
     })
   ]
 };
@@ -231,7 +270,8 @@ Using with Vite + vite-plugin-checker.
 #### 5.1. Kerakli paketlar / Required packages
 
 ```bash
-npm install vite @vitejs/plugin-vue ttypescript --save-dev
+npm install vite @vitejs/plugin-vue ts-patch --save-dev
+npx ts-patch install
 ```
 
 #### 5.2. vite.config.ts
@@ -245,35 +285,16 @@ export default defineConfig({
   esbuild: false,
   build: {
     rollupOptions: {
-      // Configure rollup to use ttypescript
+      // ts-patch bilan TypeScript ishlaydi
+      // TypeScript works with ts-patch
     }
   }
 });
 ```
 
-**Eslatma / Note**: Vite ESBuild ishlatadi, lekin DI-Compiler uchun TypeScript compiler kerak. Rollup'ning typescript plugin'idan foydalaning.
+**Eslatma / Note**: Vite ESBuild ishlatadi, lekin DI-Compiler uchun TypeScript compiler kerak. ts-patch o'rnatib, Rollup'ning typescript plugin'idan foydalaning.
 
-Vite uses ESBuild, but DI-Compiler requires TypeScript compiler. Use Rollup's typescript plugin.
-
-#### 5.3. Alternative: vite-plugin-ts-paths
-
-```bash
-npm install vite-plugin-ts-paths --save-dev
-```
-
-```typescript
-// vite.config.ts
-import { defineConfig } from 'vite';
-import tsPaths from 'vite-plugin-ts-paths';
-
-export default defineConfig({
-  plugins: [
-    tsPaths({
-      compiler: 'ttypescript'
-    })
-  ]
-});
-```
+Vite uses ESBuild, but DI-Compiler requires TypeScript compiler. Install ts-patch and use Rollup's typescript plugin.
 
 ### Usul 6 / Method 6: ts-node bilan / With ts-node
 
@@ -282,16 +303,14 @@ Development vaqtida to'g'ridan-to'g'ri ishlatish / Running directly during devel
 #### 6.1. ts-node ni o'rnatish / Install ts-node
 
 ```bash
-npm install ts-node ttypescript --save-dev
+npm install ts-node ts-patch --save-dev
+npx ts-patch install
 ```
 
 #### 6.2. tsconfig.json
 
 ```json
 {
-  "ts-node": {
-    "compiler": "ttypescript"
-  },
   "compilerOptions": {
     "plugins": [
       {
@@ -301,6 +320,10 @@ npm install ts-node ttypescript --save-dev
   }
 }
 ```
+
+**Eslatma / Note**: ts-patch bilan `ts-node` oddiy ravishda ishlaydi, qo'shimcha konfiguratsiya kerak emas.
+
+With ts-patch, `ts-node` works normally without additional configuration.
 
 #### 6.3. Ishlatish / Usage
 
@@ -331,16 +354,17 @@ my-project/
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "build": "ttsc",
-    "dev": "ttsc --watch",
-    "start": "node dist/index.js"
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "start": "node dist/index.js",
+    "postinstall": "ts-patch install -s"
   },
   "dependencies": {
     "@wessberg/di": "^3.0.2"
   },
   "devDependencies": {
     "@wessberg/di-compiler": "^3.0.1",
-    "ttypescript": "^1.5.15",
+    "ts-patch": "^3.0.2",
     "typescript": "^5.0.0"
   }
 }
@@ -463,6 +487,58 @@ npm start
 
 ## 4. Muammolarni hal qilish / Troubleshooting
 
+### ⚠️ Xato: "Cannot set property createProgram" (ttypescript bilan / with ttypescript)
+
+**To'liq xato / Full error**:
+```
+TypeError: Cannot set property createProgram of #<Object> which has only a getter
+```
+
+**Sabab / Cause**: Bu ttypescript ning TypeScript 5.0+ bilan mos kelmasligi muammosi. TypeScript 5.0+ da module export'lar frozen (muzlatilgan) bo'lib, ttypescript ularni patch qila olmaydi.
+
+This is a compatibility issue between ttypescript and TypeScript 5.0+. In TypeScript 5.0+, module exports are frozen, preventing ttypescript from patching them.
+
+**Yechim / Solution**: **ts-patch** ishlatishga o'ting (TAVSIYA ETILADI / RECOMMENDED):
+
+#### Variant 1: ts-patch ishlatish / Use ts-patch
+
+```bash
+# ttypescript ni o'chirish / Uninstall ttypescript
+npm uninstall ttypescript
+
+# ts-patch ni o'rnatish / Install ts-patch
+npm install ts-patch --save-dev
+
+# ts-patch ni faollashtirish / Enable ts-patch
+npx ts-patch install
+
+# Endi oddiy tsc ishlatishingiz mumkin / Now you can use regular tsc
+npx tsc
+
+# Watch mode
+npx tsc --watch
+```
+
+**package.json**:
+```json
+{
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch"
+  }
+}
+```
+
+#### Variant 2: TypeScript versiyasini pasaytirish (tavsiya etilmaydi / not recommended)
+
+```bash
+npm install typescript@4.9.5 --save-dev
+```
+
+**Eslatma / Note**: TypeScript 5.0+ uchun **ts-patch tavsiya etiladi**. ttypescript ishlab chiqish to'xtatilgan va yangi TypeScript versiyalari bilan ishlamaydi.
+
+**Note**: For TypeScript 5.0+, **ts-patch is recommended**. ttypescript is no longer maintained and doesn't work with newer TypeScript versions.
+
 ### Xato: "2 arguments required, but only 0 present"
 
 **Sabab / Cause**: DI-Compiler ishlamayapti.
@@ -566,11 +642,11 @@ For tree-shaking and performance:
 ### 3. Watch mode / Kuzatish rejimi
 
 ```bash
-# ttypescript bilan
-npx ttsc --watch
+# ts-patch bilan / with ts-patch
+npx tsc --watch
 
-# ts-node bilan
-npx ts-node-dev --compiler ttypescript src/index.ts
+# ts-node-dev bilan / with ts-node-dev
+npx ts-node-dev src/index.ts
 ```
 
 ### 4. IDE Integration (VS Code)
@@ -600,10 +676,14 @@ TypeScript transforms the relationship between interfaces and classes at compile
 
 ### Qaysi build tool'ni tanlashim kerak?
 
-- **Yangi loyiha**: ttypescript (eng oson)
-- **Webpack loyihasi**: Webpack + ts-loader + ttypescript
-- **Vite/Vue**: Rollup plugin bilan
-- **Node.js server**: ts-node + ttypescript
+- **Yangi loyiha**: **ts-patch** (tavsiya etiladi, barcha TypeScript versiyalari bilan ishlaydi)
+- **Webpack loyihasi**: Webpack + ts-loader + ts-patch
+- **Vite/Vue**: Rollup plugin + ts-patch bilan
+- **Node.js server**: ts-node + ts-patch
+
+**Eslatma / Note**: TypeScript 5.0+ ishlatayotgan bo'lsangiz, ts-patch'dan foydalaning.
+
+For TypeScript 5.0+, use ts-patch.
 
 ### Production'da ishlayaptimi?
 
@@ -626,7 +706,7 @@ Agar muammo yuzaga kelsa, quyidagi ma'lumotlarni bering:
 If you encounter issues, provide the following information:
 
 1. TypeScript versiyasi / TypeScript version: `tsc --version`
-2. Build tool / Qurilish vositasi: webpack/rollup/vite/ttsc
+2. Build tool / Qurilish vositasi: webpack/rollup/vite/ts-patch/tsc
 3. Xato xabari / Error message
 4. tsconfig.json fayli / tsconfig.json file
 

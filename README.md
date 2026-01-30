@@ -103,12 +103,15 @@ $ pnpm add @wessberg/di
 
 **⚠️ Important:** This library requires the [DI-Compiler](https://github.com/wessberg/di-compiler) to work properly. The compiler transforms your TypeScript code at compile-time to enable interface-to-implementation mapping.
 
-### Quick Setup
+### Quick Setup (TypeScript 5.0+)
 
 ```bash
 # Install both the runtime and compiler
 $ npm install @wessberg/di
-$ npm install @wessberg/di-compiler ttypescript --save-dev
+$ npm install @wessberg/di-compiler ts-patch --save-dev
+
+# Enable ts-patch
+$ npx ts-patch install
 
 # Configure tsconfig.json
 {
@@ -119,16 +122,18 @@ $ npm install @wessberg/di-compiler ttypescript --save-dev
   }
 }
 
-# Build with ttypescript instead of tsc
-$ npx ttsc
+# Build with regular tsc
+$ npx tsc
 ```
+
+**Note:** For TypeScript 5.0+, use `ts-patch` instead of `ttypescript`. ttypescript has compatibility issues with newer TypeScript versions.
 
 ### Full Setup Guides
 
 - **[Quick Start Guide](./documentation/examples/di-compiler-quick-start.md)** - Get started in 5 minutes
 - **[Complete Setup Guide](./documentation/examples/di-compiler-setup.md)** - Detailed configuration for Webpack, Rollup, Vite, etc.
 
-Without the compiler, you'll get errors like `"2 arguments required, but only 0 present"`.
+Without the compiler, you'll get errors like `"2 arguments required, but only 0 present"` or `"Cannot set property createProgram"` (with ttypescript).
 
 <!-- SHADOW_SECTION_USAGE_START -->
 
