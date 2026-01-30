@@ -99,6 +99,42 @@ $ pnpm add @wessberg/di
 
 <!-- SHADOW_SECTION_INSTALL_END -->
 
+## Setup DI-Compiler
+
+**⚠️ Important:** This library requires the [DI-Compiler](https://github.com/wessberg/di-compiler) to work properly. The compiler transforms your TypeScript code at compile-time to enable interface-to-implementation mapping.
+
+### Quick Setup (TypeScript 5.0+)
+
+```bash
+# Install both the runtime and compiler
+$ npm install @wessberg/di
+$ npm install @wessberg/di-compiler ts-patch --save-dev
+
+# Enable ts-patch
+$ npx ts-patch install
+
+# Configure tsconfig.json
+{
+  "compilerOptions": {
+    "plugins": [
+      { "transform": "@wessberg/di-compiler" }
+    ]
+  }
+}
+
+# Build with regular tsc
+$ npx tsc
+```
+
+**Note:** For TypeScript 5.0+, use `ts-patch` instead of `ttypescript`. ttypescript has compatibility issues with newer TypeScript versions.
+
+### Full Setup Guides
+
+- **[Quick Start Guide](./documentation/examples/di-compiler-quick-start.md)** - Get started in 5 minutes
+- **[Complete Setup Guide](./documentation/examples/di-compiler-setup.md)** - Detailed configuration for Webpack, Rollup, Vite, etc.
+
+Without the compiler, you'll get errors like `"2 arguments required, but only 0 present"` or `"Cannot set property createProgram"` (with ttypescript).
+
 <!-- SHADOW_SECTION_USAGE_START -->
 
 ## Usage
@@ -166,6 +202,43 @@ Sure, you can do that if you want to:
 // depend on what you provided when you registered the service
 const service = container.get<IMyService>();
 ```
+
+### Passing Configuration to Services
+
+When you need to pass configuration to a service's constructor, you have several options:
+
+**Method 1: Factory Function (Simplest)**
+
+```typescript
+const config = { baseUrl: "https://api.example.com", apiKey: "key" };
+container.registerSingleton<ApiClient>(() => new ApiClient(config));
+```
+
+**Method 2: Register Config as a Separate Service**
+
+```typescript
+const config = { baseUrl: "https://api.example.com", apiKey: "key" };
+
+// Register the config first
+container.registerSingleton<ApiConfig>(() => config);
+
+// ApiClient must declare its dependency on ApiConfig using CONSTRUCTOR_ARGUMENTS_SYMBOL
+// Then it will automatically receive the config
+container.registerSingleton<ApiClient>();
+```
+
+**Note:** Method 2 requires the ApiClient to declare its constructor dependencies. See the detailed [ApiClient Configuration Guide](./documentation/examples/api-client-config.md) for complete examples of both methods.
+
+### Framework Integration
+
+This DI container works great with modern frameworks:
+
+- **Vue.js**: Full integration with Vue 3 (Composition API, Options API, Provide/Inject, Pinia). 
+  - 🚀 **[Vue 3 + Vite Complete Example](./documentation/examples/vue3-vite-complete-example.md)** - Ready-to-use project template
+  - [Vue.js Integration Guide](./documentation/examples/vue-integration.md) - Detailed integration patterns
+- **React**: Can be used with Context API or custom hooks
+- **Angular**: Works alongside Angular's DI system
+- **Node.js**: Perfect for Express, Fastify, NestJS backends
 
 <!-- SHADOW_SECTION_CONTRIBUTING_START -->
 
