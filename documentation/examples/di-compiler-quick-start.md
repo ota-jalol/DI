@@ -428,6 +428,8 @@ npm run build
 
 ## Vue.js / React bilan / With Vue.js / React
 
+## Vue.js / React bilan / With Vue.js / React
+
 ### Vue.js
 
 DI-Compiler Vue.js bilan mukammal ishlaydi:
@@ -436,7 +438,8 @@ DI-Compiler works perfectly with Vue.js:
 
 ```bash
 npm install @wessberg/di
-npm install @wessberg/di-compiler ttypescript --save-dev
+npm install @wessberg/di-compiler ts-patch --save-dev
+npx ts-patch install
 ```
 
 **vite.config.ts** da Rollup typescript plugin'ini qo'shing.
@@ -453,7 +456,8 @@ Same with React:
 
 ```bash
 npm install @wessberg/di
-npm install @wessberg/di-compiler ttypescript --save-dev
+npm install @wessberg/di-compiler ts-patch --save-dev
+npx ts-patch install
 ```
 
 Webpack yoki Rollup konfiguratsiyasiga qo'shing.
